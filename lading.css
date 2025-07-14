@@ -1,0 +1,746 @@
+
+body.dark-mode {
+  --bg-color: #111111;             /* fondo general oscuro */
+  --text-color: #ffffff;           /* texto blanco */
+  --box-color: #1a1a1a;            /* tarjetas oscuras */
+  --particles-color: #03c7fd;      /* azul neón tech */
+  --particles-bg: var(--bg-color); /* fondo igual que el bg */
+  /* Colores adicionales para variedad visual */
+  --accent-color: #03c7fd;         /* azul neón principal */
+  --accent-neon-blue: #00e0ff;
+  --accent-neon-pink: #ff33cc;
+  --accent-neon-purple: #cc66ff;
+  --accent-neon-green: #25D366;
+  --accent-neon-yellow: #ffee00;
+  --text-color-claro: #ffffff;
+  /* Sombras suaves para profundidad en modo oscuro */
+  --shadow-color: #333;
+  --shadow-color-2: rgb(0, 255, 255);
+  /* Gradientes oscuros neón */
+  --gradient-primary: linear-gradient(135deg, #03c7fd, #00ffaa);
+  --gradient-purple: linear-gradient(135deg, #1a1a1a, #3c0066);
+  --gradient-pink-blue: linear-gradient(135deg, #ff33cc, #00e0ff);
+}
+
+body.claro {
+  --bg-color: #fffaf5; /* Fondo general cálido y suave */
+  --text-color: #010101;; /* Marrón oscuro suave (para contraste) */
+  --accent-color: #ff7300; /* Naranja suave vibrante */
+  --box-color: #fff2e6; /* Fondo de tarjetas color crema */
+  --shadow-color: #333;; /* Sombra cálida */
+  --shadow-color-2: rgb(0, 255, 255);
+  --particles-color: #ffd6b3; /* Partículas cálidas/naranjas suaves */
+  --particles-bg: var(--bg-color);
+
+  /* Colores de acento adicionales */
+  --accent-soft-blue: #f0e8ff;
+  --accent-soft-cyan: #e8fff6;
+  --accent-soft-purple: #ffe6f9;
+  --accent-soft-pink: #ffe0e0;
+  --accent-neon-green: #ffc07f;
+
+  --text-color-claro: #0213f8;
+
+  /* Gradientes suaves florales/lunares */
+  --gradient-primary: linear-gradient(135deg, #ffe0cc, #fff5e6);
+  --gradient-accent: linear-gradient(135deg, #ffbb88, #ffddaa);
+
+}
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+body {
+  font-family: "Poppins", sans-serif;
+  background-color: var(--bg-color); /* fondo base según modo */
+  transition: background 0.3s, color 0.3s;
+  padding-top: 60px;
+}
+
+body.claro {
+  content: "";
+  position: relative; /* fijo para que quede de fondo */
+  background-image: url('https://s1.1zoom.me/b9131/230/Sky_Night_Moon_Clouds_527844_3840x2160.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  /* opacity: 0.6; acá controlas la opacidad */
+  z-index: -1; /* detrás de todo */
+  transition: opacity 0.3s;
+  font-weight: bold;
+}
+
+#particles-js {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+}
+
+#particles-js::before {
+  content: "";
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: var(--particles-bg); /* lo definimos por tema */
+  z-index: -1;
+  opacity: 0.2; /* solo si quieres oscurecer/suavizar más */
+}
+
+/* ---------- Navbar ---------- */
+nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background: var(--nav-blur);
+  border-bottom: 1px solid var(--accent-color);
+  backdrop-filter: blur(12px);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 2rem;
+  z-index: 1000;
+  transition: background 0.3s;
+}
+
+.nav-links {
+  display: flex;
+  gap: 2rem;
+  list-style: none;
+}
+
+.nav-links li a {
+  color: var(--text-color-claro);
+  text-decoration: none;
+  font-weight: 500;
+  position: relative;
+  transition: color 0.3s;
+  font-weight: bold;
+}
+
+.nav-links li a::after {
+  content: "";
+  position: absolute;
+  width: 0%;
+  height: 2px;
+  background-color: var(--accent-color);
+  left: 0;
+  bottom: -4px;
+  transition: width 0.3s;
+}
+
+.nav-links li a:hover::after {
+  width: 100%;
+}
+
+.nav-links li a.active {
+  color: var(--accent-color);
+  text-shadow: 0 0 6px var(--accent-color);
+  font-weight: bold;
+
+}
+
+.nav-links li a.active::after {
+  width: 100%;
+}
+
+/* ---------- Hamburguesa ---------- */
+.menu-icon {
+  display: none;
+  font-size: 1.8rem;
+  color: var(--accent-color);
+  text-shadow: 0 0 8px var(--accent-color);
+  cursor: pointer;
+  z-index: 1100;
+}
+
+#menu-toggle {
+  display: none;
+}
+
+/* ---------- Overlay (fondo oscuro al abrir menú móvil) ---------- */
+.menu-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.6);
+  z-index: 900;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+
+/* Mostrar overlay cuando el menú está activo */
+#menu-toggle:checked ~ .menu-overlay {
+  opacity: 1;
+  pointer-events: all;
+}
+
+/* ---------- Responsive (Sidebar móvil) ---------- */
+@media (max-width: 768px) {
+  .nav-links {
+    position: fixed;
+    left: -100%;
+    top: 0;
+    height: 100vh;
+    width: 250px;
+    background: var(--nav-blur);
+    backdrop-filter: blur(15px);
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 5rem 2rem;
+    transition: left 0.3s ease;
+    box-shadow: 5px 0 15px rgba(0, 0, 0, 0.2);
+    border-right: 1px solid var(--shadow-color);
+    z-index: 1001;
+  }
+
+  #menu-toggle:checked ~ nav .nav-links {
+    left: 0;
+  }
+
+  .menu-icon {
+    display: block;
+  }
+
+  .nav-links li {
+    margin-bottom: 0.8rem;
+    width: 100%;
+  }
+
+  .nav-links li a {
+    font-size: 1.1rem;
+    width: 100%;
+    display: block;
+    padding: 0.5rem 0;
+    padding-left: 1rem;
+    transition: border 0.3s;
+  }
+}
+
+/* ---------- Botones de modo oscuro ---------- */
+.desktop-toggle {
+  display: block;
+}
+
+.mobile-theme-toggle {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  #themeToggle {
+    display: none;
+  }
+
+  .mobile-theme-toggle {
+    display: block;
+    margin-top: 2rem;
+  }
+
+  .mobile-theme-toggle .toggle-switch {
+    background: none;
+    color: var(--accent-color);
+    font-size: 1.2rem;
+    border: 1px solid var(--accent-color);
+    padding: 0.4rem 1rem;
+    border-radius: 8px;
+    transition: background 0.3s;
+  }
+
+  .toggle-thumb{
+    margin-left: -10px;
+  }
+
+  .mobile-theme-toggle .toggle-switch:hover {
+    background: var(--nav-blur);
+    color: #000;
+  }
+}
+
+#themeToggle {
+  background: var(--nav-blur);
+  border: none;
+  padding: 6px 12px;
+  border-radius: 25px;
+  cursor: pointer;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  font-size: 1.1em;
+  transition: background 0.3s, color 0.3s, box-shadow 0.3s;
+
+}
+#themeToggle:hover {
+  background: var(--accent-color);
+  color: #000;
+  box-shadow: 0 0 15px var(--accent-color);
+}
+
+header {
+  text-align: center;
+  padding: 60px 20px 30px;
+}
+header h1 {
+  font-size: 2.8em;
+  color: var(--accent-color);
+}
+header p {
+  font-size: 1.2em;
+  margin-top: 10px;
+}
+header {
+  backdrop-filter: blur(3px);
+  padding: 4rem 2rem;
+  text-align: center;
+  border-radius: 15px;
+  margin: 1rem;
+  color: var(--text-color);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+}
+
+.section-title {
+  font-size: 2em;
+  margin: 30px 0 15px;
+  color: var(--accent-color);
+  text-align: center;
+}
+.benefits ul {
+  list-style: none;
+  padding: 0;
+  margin-top: 10px;
+}
+.benefits li {
+  margin-bottom: 12px;
+}
+.benefits li::before {
+  content: "✔";
+  color: var(--accent-color);
+  margin-right: 10px;
+}
+
+.projects {
+  padding: 3rem 2rem;
+  text-align: center;
+}
+
+.projects-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 2rem;
+}
+
+.project-card {
+  backdrop-filter: blur(6px);
+  color: var(--text-color);
+  border-radius: 15px;
+  padding: 1rem;
+  width: 300px;
+  box-shadow: 0 8px 20px var(--shadow-color);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  text-align: left;
+}
+
+.project-card:hover {
+  transform: scale(1.02);
+  box-shadow: 0 12px 24px var(--shadow-color);
+}
+
+.project-img {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+  border-radius: 12px;
+  margin-bottom: 1rem;
+}
+
+.project-info {
+  padding: 20px;
+}
+
+.project-info h3 {
+  margin-bottom: 10px;
+  color: var(--accent-color);
+  font-size: 1.3em;
+}
+
+.project-info p {
+  font-size: 0.95em;
+  line-height: 1.5;
+}
+
+footer {
+  background: var(--nav-blur);
+  box-shadow: 0 8px 20px var(--shadow-color);
+  color: var(--text-color);
+  text-align: center;
+  padding: 1.5rem 1rem;
+  font-size: 0.9rem;
+  border-top: 2px solid var(--accent-color);
+  animation: fadeInUp 1s ease-in-out;  /* <- esta línea */
+}
+
+footer .tech-icons {
+  margin-top: 0.8rem;
+  font-size: 2rem;
+}
+
+footer .tech-icons i {
+  margin: 0 0.7rem;
+  transition: transform 0.3s ease, filter 0.3s ease;
+  cursor: pointer;
+}
+
+footer .tech-icons i:hover {
+  transform: scale(1.2);
+  filter: brightness(1.2);
+}
+
+/* 🎨 Colores específicos por ícono */
+.html-icon {
+  color: #e34c26;
+}
+.css-icon {
+  color: #264de4;
+}
+.js-icon {
+  color: #f0db4f;
+}
+
+/* Animación suave */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.benefit-cards {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: center;
+  margin-top: 15px;
+}
+.benefit-card {
+  background: var(--nav-blur);
+  padding: 18px 25px;
+  border-radius: 15px;
+  box-shadow: 0 0 10px var(--shadow-color);
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  font-weight: 600;
+  color: var(--text-color);
+  min-width: 230px;
+  max-width: 280px;
+  transition: transform 0.3s ease;
+  backdrop-filter: blur(5px);
+}
+.benefit-card:hover {
+  transform: translateY(-7px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+}
+.icon {
+  font-size: 2rem;
+  color: var(--accent-color);
+}
+.benefit-card p {
+  margin: 0;
+}
+
+/* Contenedor servicios con estilo igual que beneficios */
+.servicios-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: center;
+  margin-top: 15px;
+}
+
+/* Tarjetas de servicio igual que beneficio */
+.servicio-card {
+  background: var(--nav-blur);
+  padding: 18px 25px;
+  border-radius: 15px;
+  box-shadow: 0 0 10px var(--shadow-color);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 12px;
+  font-weight: 600;
+  color: var(--text-color);
+  min-width: 230px;
+  max-width: 280px;
+  transition: transform 0.3s ease;
+  cursor: default;
+  backdrop-filter: blur(6px);
+}
+
+.servicio-card:hover {
+  transform: translateY(-7px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+}
+
+.emoji {
+  font-size: 2.5rem;
+  /* color si quieres, por ejemplo: */
+  color: var(--accent-color);
+}
+
+.project-img {
+  width: 100%;
+  border-radius: 15px 15px 0 0;
+  height: 160px;
+  object-fit: cover;
+  margin-bottom: 15px;
+}
+.cta {
+  text-align: center;
+  margin: 60px 0;
+}
+
+.cta h2 {
+  font-size: 2em;
+  margin-bottom: 10px;
+  color: var(--accent-color);
+}
+
+.cta-whatsapp {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  background-color: var(--accent-neon-green);
+  color: var(--text-color);
+  padding: 14px 30px;
+  border-radius: 35px;
+  font-size: 1.1em;
+  font-weight: 600;
+  text-decoration: none;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  transition: background 0.3s ease, transform 0.2s ease;
+}
+
+.cta-whatsapp i {
+  font-size: 1.4em;
+}
+
+.cta-whatsapp:hover {
+  background-color: #1ebe5d;
+  transform: scale(1.05);
+  box-shadow: 0 6px 20px var(--shadow-color);
+}
+
+.project-btn {
+  display: inline-block;
+  margin-top: 0.8rem;
+  padding: 0.5rem 1rem;
+  background-color: var(--accent-color);
+  color: var(--text-color);
+  text-decoration: none;
+  border-radius: 10px;
+  font-weight: bold;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.project-btn:hover {
+  background-color: #00a6d6;
+  transform: scale(1.05);
+}
+
+.about {
+  backdrop-filter: blur(4px);     /* difumina el fondo detrás */
+  color: var(--text-color);
+  padding: 2rem 1rem;
+  max-width: 900px;
+  margin: 2rem auto;
+  border-radius: 16px;
+  box-shadow: 0 8px 20px var(--shadow-color);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1.5rem;
+  transition: all 0.4s ease-in-out;
+}
+
+.about-img {
+  flex: 1 1 180px;
+  max-width: 180px;
+  border-radius: 50%;
+  box-shadow: 0 2px 8px var(--shadow-color);
+  object-fit: cover;
+}
+
+.about-content {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 2rem;
+}
+/* Contenedor del toggle */
+.toggle-switch {
+  position: relative;
+  width: 70px;
+  height: 32px;
+  background-color: var(--box-color);
+  border-radius: 20px;
+  border: 2px solid var(--accent-color);
+  cursor: pointer;
+  transition: background-color 0.3s ease, border-color 0.3s ease;
+  outline: none;
+  display: flex;
+  align-items: center;
+  padding: 0 4px;
+}
+
+/* El "thumb" que se mueve */
+.toggle-thumb {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  background-color: var(--accent-color);
+  border-radius: 50%;
+  color: var(--bg-color);
+  font-size: 18px;
+  transition: transform 0.3s ease, background-color 0.3s ease;
+  user-select: none;
+}
+/* Estado oscuro: mover el thumb a la derecha y cambiar color */
+body.dark-mode .toggle-switch {
+  background-color: var(--accent-color);
+  border-color: var(--accent-color);
+}
+
+body.dark-mode .toggle-thumb {
+  transform: translateX(28px);
+  background-color: var(--box-color);
+  color: var(--accent-color);
+}
+
+.skills {
+  backdrop-filter: blur(6px);
+  color: var(--text-color);
+  padding: 2.5rem 1rem;
+  border-radius: 12px;
+  max-width: 1000px;
+  margin: 2rem auto;
+  box-shadow: 0 4px 12px var(--shadow-color);
+  text-align: center;
+}
+
+.skills-list {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1.5rem;
+  margin-top: 1.5rem;
+}
+
+.skill {
+  font-weight: bold;
+  color: var(--text-color);
+  border: 2px solid var(--accent-color);
+  padding: 1rem 1.5rem;
+  border-radius: 8px;
+  font-size: 1.2rem;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.skill i {
+  font-size: 1.6rem;
+  color: var(--accent-color);
+}
+
+/* Efecto hover */
+.skill:hover {
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+.skill-header i {
+  margin-right: 0.5rem;
+  font-size: 1.5rem;
+  color: var(--accent-color);
+}
+
+.toggle-desc {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  color: var(--accent-color);
+  cursor: pointer;
+  transition: transform 0.3s ease;
+}
+
+.skill-desc {
+  margin-top: 0.5rem;
+  display: none;
+  font-size: 0.95rem;
+  color: var(--text-color);
+  line-height: 1.5;
+}
+
+/* Mostrar descripción */
+.skill.show .skill-desc {
+  display: block;
+}
+/*contacto formulario*/
+.contacto {
+  max-width: 600px;
+  margin: auto;
+  padding: 40px 20px;
+  background-color: transparent;
+  color: var(--text-color);
+  backdrop-filter: blur(2px);
+}
+
+.formulario-contacto {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.formulario-contacto input,
+.formulario-contacto textarea {
+  padding: 12px;
+  border: none;
+  border-bottom: 2px solid var(--shadow-color-2);
+  border-radius: 8px;
+  font-family: inherit;
+  font-size: 16px;
+  background: var(--nav-blur);
+  backdrop-filter: blur(6px);
+  color: var(--text-color);
+  transition: all 0.3s ease;
+  outline: none;
+}
+
+.formulario-contacto button {
+  background: var(--accent-color);
+  color: #fff;
+  border: none;
+  padding: 12px;
+  font-size: 18px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+  box-shadow: 0 2px 10px var(--shadow-color);
+}
+
+.formulario-contacto button:hover {
+  background: var(--accent-neon-blue);
+}

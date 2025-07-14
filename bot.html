@@ -1,0 +1,180 @@
+<!-- bot.html -->
+<div class="bot-bubble" id="botToggle">🤖</div>
+<div class="bot-box" id="botBox">
+  <div class="bot-header">AxelBot</div>
+  <div class="bot-messages" id="botMessages"></div>
+  <div class="bot-input">
+    <input type="text" id="userInput" placeholder="Escribe algo..." />
+    <button id="sendBtn">Enviar</button>
+  </div>
+</div>
+
+<style>
+/* Botón flotante para abrir chat */
+.bot-bubble {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background: #1f2937; /* gris oscuro */
+  color: #f9fafb; /* casi blanco */
+  padding: 12px 18px;
+  border-radius: 50px;
+  cursor: pointer;
+  font-weight: 600;
+  box-shadow: 0 4px 8px rgb(0 0 0 / 0.3);
+  z-index: 9999;
+  transition: background-color 0.3s ease;
+}
+.bot-bubble:hover {
+  background: #2563eb; /* azul vibrante */
+}
+
+/* Contenedor del chat */
+.bot-box {
+  position: fixed;
+  bottom: 80px;
+  right: 20px;
+  width: 320px;
+  height: 400px;
+  background: #111827; /* fondo oscuro */
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 10px 30px rgb(0 0 0 / 0.4);
+  z-index: 9999;
+  display: none;
+}
+
+/* Header */
+.bot-header {
+  background: #1f2937;
+  color: #f9fafb;
+  padding: 14px 20px;
+  font-weight: 700;
+  border-radius: 12px 12px 0 0;
+  user-select: none;
+  letter-spacing: 0.03em;
+}
+
+/* Mensajes */
+.bot-messages {
+  padding: 16px;
+  flex-grow: 1;
+  overflow-y: auto;
+  font-size: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  scrollbar-width: thin;
+  scrollbar-color: #374151 transparent;
+}
+
+/* Scrollbar (para navegadores basados en Firefox y Webkit) */
+.bot-messages::-webkit-scrollbar {
+  width: 6px;
+}
+.bot-messages::-webkit-scrollbar-thumb {
+  background-color: #374151;
+  border-radius: 3px;
+}
+
+/* Burbuja mensaje BOT */
+.message-bot {
+  align-self: flex-start;
+  background: #2563eb; /* azul Telegram */
+  color: #e0e7ff;
+  padding: 10px 16px;
+  border-radius: 16px 16px 16px 4px;
+  max-width: 80%;
+  font-weight: 500;
+  box-shadow: 0 2px 8px rgb(37 99 235 / 0.5);
+}
+
+/* Burbuja mensaje USUARIO */
+.message-user {
+  align-self: flex-end;
+  background: #374151; /* gris oscuro */
+  color: #f9fafb;
+  padding: 10px 16px;
+  border-radius: 16px 16px 4px 16px;
+  max-width: 80%;
+  font-weight: 600;
+  box-shadow: 0 2px 8px rgb(55 65 81 / 0.6);
+}
+
+/* Input y botón enviar */
+.bot-input {
+  display: flex;
+  border-top: 1px solid #374151;
+  background: #1f2937;
+  padding: 12px;
+  border-radius: 0 0 12px 12px;
+}
+.bot-input input {
+  flex: 1;
+  border: none;
+  padding: 12px 16px;
+  background: #374151;
+  color: #f9fafb;
+  border-radius: 8px;
+  font-size: 14px;
+}
+.bot-input input::placeholder {
+  color: #9ca3af;
+}
+.bot-input input:focus {
+  outline: none;
+  background: #4b5563;
+}
+.bot-input button {
+  background: #2563eb;
+  color: #e0e7ff;
+  border: none;
+  padding: 12px 20px;
+  margin-left: 8px;
+  border-radius: 8px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+.bot-input button:hover {
+  background: #1e40af;
+}
+
+.sniper-dots {
+  display: flex;
+  gap: 8px;
+}
+
+.sniper-dots span {
+  width: 12px;
+  height: 12px;
+  border: 2px solid #00ffff;
+  border-radius: 50%;
+  animation: sniper-pulse 2.5s infinite ease-in-out;
+  opacity: 0.7;
+}
+
+.sniper-dots span:nth-child(1) {
+  animation-delay: 0s;
+}
+.sniper-dots span:nth-child(2) {
+  animation-delay: 0.5s;
+}
+.sniper-dots span:nth-child(3) {
+  animation-delay: 1s;
+}
+
+@keyframes sniper-pulse {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 0.7;
+    box-shadow: 0 0 6px #00ffffaa;
+  }
+  50% {
+    transform: scale(1.4);
+    opacity: 1;
+    box-shadow: 0 0 15px #00ffffee;
+  }
+}
+</style>
