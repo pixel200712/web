@@ -35,7 +35,6 @@ function aplicarModoOscuro(modo) {
   cargarParticulas(modo);
 }
 
-
   function detectarPreferencia() {
     if (window.matchMedia) {
       return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'oscuro' : 'claro';
@@ -215,11 +214,11 @@ particlesJS('particles-js', config);
 });
 
 //configuracion de la ia bot 
-  fetch('bot.html')
+ /* fetch('bot.html')
     .then(res => res.text())
     .then(html => {
       document.body.insertAdjacentHTML('beforeend', html);
       const script = document.createElement('script');
       script.src = 'bot.js';
       document.body.appendChild(script);
-    });
+    });*/
